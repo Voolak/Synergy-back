@@ -38,4 +38,6 @@ public class PrivateMessageService {
         privateMessageRepository.save(fromBdd);
     }
 
+    public void updateUpvote(){}
+
 }

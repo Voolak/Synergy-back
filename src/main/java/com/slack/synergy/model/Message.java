@@ -3,6 +3,7 @@ package com.slack.synergy.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "messages")
@@ -14,8 +15,18 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
-    private int upvote;
-    private int downvote;
+    @ManyToMany
+    @JoinTable(
+            name = "upvoters_messages",
+            joinColumns = @JoinColumn(name = "message_id"),
+            inverseJoinColumns = @JoinColumn(name = "upvoter_id"))
+    private List<User> upvoters;
+    @ManyToMany
+    @JoinTable(
+            name = "downvoters_messages",
+            joinColumns = @JoinColumn(name = "message_id"),
+            inverseJoinColumns = @JoinColumn(name = "downvoter_id"))
+    private List<User> downvoters;
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
@@ -56,20 +67,12 @@ public class Message {
         this.content = content;
     }
 
-    public int getUpvote() {
-        return upvote;
+    public List<User> getUpvoters() {
+        return upvoters;
     }
 
-    public void setUpvote(int upvote) {
-        this.upvote = upvote;
-    }
-
-    public int getDownvote() {
-        return downvote;
-    }
-
-    public void setDownvote(int downvote) {
-        this.downvote = downvote;
+    public List<User> getDownvoters() {
+        return downvoters;
     }
 
     public LocalDateTime getCreationDate() {
@@ -86,5 +89,12 @@ public class Message {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public void addUpvoter(User user){
+        upvoters.add(user);
+    }
+    public void addDownvoter(User user){
+        downvoters.add(user);
     }
 }
