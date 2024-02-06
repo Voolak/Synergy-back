@@ -32,15 +32,10 @@ public class PrivateMessageService {
         privateMessageRepository.deleteById(id);
     }
 
-    public void update(PrivateMessage privateMessage){
-        Optional<PrivateMessage> bddPrivateMessage = privateMessageRepository.findById(privateMessage.getId());
-        if (bddPrivateMessage.isPresent()){
-            if (!privateMessage.getContent().isBlank()){
-                bddPrivateMessage.get().setUpdateDate(LocalDateTime.now());
-                bddPrivateMessage.get().setContent(privateMessage.getContent());
-
-                privateMessageRepository.save(bddPrivateMessage.get());
-            }
-        }
+    public void updateContent(String content, PrivateMessage fromBdd){
+        fromBdd.setUpdateDate(LocalDateTime.now());
+        fromBdd.setContent(content);
+        privateMessageRepository.save(fromBdd);
     }
+
 }
