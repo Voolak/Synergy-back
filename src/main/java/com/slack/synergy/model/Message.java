@@ -27,7 +27,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(String content, User sender) {
+    protected Message(String content, User sender) {
         this.content = content;
         this.sender = sender;
     }
