@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PrivateMessageService {
@@ -69,6 +66,12 @@ public class PrivateMessageService {
             userSet.add(p.getSender());
         }
         return userSet;
+    }
+
+    public List<PrivateMessage> findAllPrivateMessageFromTwoUserId(Integer id1,Integer id2){
+        List<PrivateMessage> listMessages = privateMessageRepository.findBySender_IdAndRecipient_Id(id1,id2);
+        listMessages.addAll(privateMessageRepository.findByRecipient_IdAndSender_Id(id1,id2));
+        return listMessages.stream().sorted(Comparator.comparing(PrivateMessage::getCreationDate).reversed()).toList();
     }
 
 }
