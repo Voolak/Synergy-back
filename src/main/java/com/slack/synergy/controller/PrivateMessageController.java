@@ -1,5 +1,6 @@
 package com.slack.synergy.controller;
 
+import com.slack.synergy.model.Channel;
 import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.service.PrivateMessageService;
@@ -38,11 +39,19 @@ public class PrivateMessageController {
 
     @PostMapping
     public ResponseEntity<?> savePrivateMessage(@RequestBody PrivateMessage message){
+        if(message.getContent() == null || message.getContent().isBlank())
+            return ResponseEntity.badRequest().body("Le contenu du message ne peut pas être vide");
+        Optional<User> senderOptional = userService.findById(message.getSender().getId());
+        Optional<User> recipientOptional = userService.findById(message.getRecipient().getId());
+        if(message.getSender() == null || senderOptional.isEmpty())
+            return ResponseEntity.badRequest().body("L'expéditeur associé n'est pas valide");
+        if(message.getRecipient() == null || recipientOptional.isEmpty())
+            return ResponseEntity.badRequest().body("Le destinataire associé n'est pas valide");
         privateMessageService.save(message);
         return ResponseEntity.status(HttpStatus.CREATED).body("Creation du message.");
     }
 
-    @PostMapping("/upvote/{idMessage}/{idUser}")
+    @PatchMapping("/upvote/{idMessage}/{idUser}")
     public ResponseEntity<?> upvoteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body("L'id de l'utilisateur n'est pas reconnu.");
@@ -57,7 +66,7 @@ public class PrivateMessageController {
     }
 
 
-    @PostMapping("/downvote/{idMessage}/{idUser}")
+    @PatchMapping("/downvote/{idMessage}/{idUser}")
     public ResponseEntity<?> downvoteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body("L'id de l'utilisateur n'est pas reconnu.");
@@ -95,7 +104,7 @@ public class PrivateMessageController {
             return ResponseEntity.badRequest().body("L'id du message n'est pas reconnu.");
         PrivateMessage privateMessage = privateMessageService.findById(idMessage).get();
         User user = userService.findById(idUser).get();
-        if(!privateMessage.getSender().getId().equals(user.getId()) && !privateMessage.getRecipient().getId().equals(user.getId()))
+        if(!privateMessage.getSender().getId().equals(user.getId()))
             return ResponseEntity.badRequest().body("Vous n'avez pas la permission de supprimer ce message.");
         privateMessageService.delete(idMessage);
         return ResponseEntity.ok("Message supprimé.");

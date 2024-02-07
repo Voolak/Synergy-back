@@ -38,7 +38,7 @@ public class PublicMessageService {
         publicMessageRepository.save(fromBdd);
     }
 
-    public void  toggleUpvote(User user,PublicMessage publicMessage){
+    public void toggleUpvote(User user,PublicMessage publicMessage){
         if(publicMessage.getUpvoters().contains(user)){
             publicMessage.getUpvoters().remove(user);
         }else{
