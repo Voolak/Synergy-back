@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/privatemessage")
+@RequestMapping("api/privatemessages")
 public class PrivateMessageController {
 
     @Autowired
