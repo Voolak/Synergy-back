@@ -1,7 +1,9 @@
 package com.slack.synergy.controller;
 
 import com.slack.synergy.model.Channel;
+import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.service.ChannelService;
+import com.slack.synergy.service.PublicMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ public class ChannelController {
 
     @Autowired
     private ChannelService channelService;
+    @Autowired
+    private PublicMessageService publicMessageService;
 
     @PostMapping
     public ResponseEntity<?> addChannel(@RequestBody Channel channel){
@@ -28,6 +32,15 @@ public class ChannelController {
     public ResponseEntity<List<Channel>> getAllChannels(){
         List<Channel> channels = channelService.findAll();
         return ResponseEntity.ok(channels);
+    }
+
+    @GetMapping("/{idChannel}")
+    public ResponseEntity<?> getChannelMessagesById(@PathVariable("idChannel") Integer idChannel) {
+        Optional<Channel> channelOptional = channelService.findById(idChannel);
+        if(channelOptional.isEmpty())
+            return ResponseEntity.badRequest().body("Ce canal n'existe pas");
+        List<PublicMessage> channelMessages = publicMessageService.findAllPublicMessageFromChannelId(idChannel);
+        return ResponseEntity.ok(channelMessages);
     }
 
     @DeleteMapping("/{idChannel}")
