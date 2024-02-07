@@ -24,4 +24,11 @@ public class PrivateMessage extends Message {
     public void setRecipient(User recipient) {
         this.recipient = recipient;
     }
+
+    @Override
+    public String toString() {
+        return "PrivateMessage{" + super.toString() +
+                "recipient=" + recipient +
+                '}';
+    }
 }

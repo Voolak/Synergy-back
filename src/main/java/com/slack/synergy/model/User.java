@@ -82,4 +82,17 @@ public class User {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", creationDate=" + creationDate +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

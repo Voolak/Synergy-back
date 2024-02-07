@@ -16,13 +16,13 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
-    @ManyToMany
+    @ManyToMany //(fetch = FetchType.EAGER)
     @JoinTable(
             name = "upvoters_messages",
             joinColumns = @JoinColumn(name = "message_id"),
             inverseJoinColumns = @JoinColumn(name = "upvoter_id"))
     private List<User> upvoters = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany  //(fetch = FetchType.EAGER)
     @JoinTable(
             name = "downvoters_messages",
             joinColumns = @JoinColumn(name = "message_id"),
@@ -99,4 +99,18 @@ public class Message {
         downvoters.add(user);
     }
     ///add remove method
+
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", upvoters=" + upvoters.size() +
+                ", downvoters=" + downvoters.size() +
+                ", sender=" + sender +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
 }
