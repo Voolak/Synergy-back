@@ -37,6 +37,20 @@ public class PrivateMessageController {
     }
 
 
+    @PostMapping("/downvote/{idMessage}/{idUser}")
+    public ResponseEntity<?> downvoteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
+        if(userService.findById(idUser).isEmpty())
+            return ResponseEntity.badRequest().body("L'id de l'utilisateur n'est pas reconnu.");
+        if(privateMessageService.findById(idMessage).isEmpty())
+            return ResponseEntity.badRequest().body("L'id du message n'est pas reconnu.");
+        PrivateMessage privateMessage = privateMessageService.findById(idMessage).get();
+        User user = userService.findById(idUser).get();
+        if(!privateMessage.getSender().getId().equals(user.getId()) && !privateMessage.getRecipient().getId().equals(user.getId()))
+            return ResponseEntity.badRequest().body("Vous n'avez pas la permission de réagir à ce message.");
+        privateMessageService.toggleDownvote(user,privateMessage);
+        return ResponseEntity.ok("Action effectuée.");
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateContentOfMessage(@RequestBody PrivateMessage fromBody, @PathVariable("id") Integer id) {
         if (!id.equals(fromBody.getId())) {
@@ -52,5 +66,7 @@ public class PrivateMessageController {
         privateMessageService.updateContent(fromBody.getContent(), optional.get());
         return ResponseEntity.ok("Contenu modifié");
     }
+
+
 }
 

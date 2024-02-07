@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PrivateMessageService {
@@ -58,4 +60,15 @@ public class PrivateMessageService {
     public List<PrivateMessage> findAllPrivateMessageFromUserId(Integer idUser){
         return privateMessageRepository.findBySender_IdOrRecipient_Id(idUser);
     }
+
+    public Set<User> findAllUniqueUsersFromPrivateMessageList(Integer idUser){
+        List<PrivateMessage> list=findAllPrivateMessageFromUserId(idUser);
+        Set<User> userSet= new HashSet<>();
+        for (PrivateMessage p: list){
+            userSet.add(p.getRecipient());
+            userSet.add(p.getSender());
+        }
+        return userSet;
+    }
+
 }
