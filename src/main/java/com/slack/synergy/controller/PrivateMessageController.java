@@ -29,7 +29,14 @@ public class PrivateMessageController {
         return ResponseEntity.ok(privateMessageService.findAllUniqueUsersFromPrivateMessageList(idUser));
     }
 
-    @GetMapping()
+    @GetMapping("/{idUser}/{idSecondUser}")
+    public ResponseEntity<?> getAllMessageFromConversation(@PathVariable("idUser") Integer idUser,@PathVariable("idSecondUser") Integer idSecondUser){
+        if(userService.findById(idUser).isEmpty())
+            return ResponseEntity.badRequest().body("L'id de l'utilisateur n'est pas reconnu.");
+        if(userService.findById(idSecondUser).isEmpty())
+            return ResponseEntity.badRequest().body("L'id de l'utilisateur second n'est pas reconnu.");
+        return ResponseEntity.ok(privateMessageService.findAllPrivateMessageFromTwoUserId(idUser,idSecondUser));
+    }
 
     @PostMapping
     public ResponseEntity<?> savePrivateMessage(@RequestBody PrivateMessage message){
