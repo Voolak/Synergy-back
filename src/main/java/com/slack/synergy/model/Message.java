@@ -3,6 +3,7 @@ package com.slack.synergy.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,13 +21,13 @@ public class Message {
             name = "upvoters_messages",
             joinColumns = @JoinColumn(name = "message_id"),
             inverseJoinColumns = @JoinColumn(name = "upvoter_id"))
-    private List<User> upvoters;
+    private List<User> upvoters = new ArrayList<>();
     @ManyToMany
     @JoinTable(
             name = "downvoters_messages",
             joinColumns = @JoinColumn(name = "message_id"),
             inverseJoinColumns = @JoinColumn(name = "downvoter_id"))
-    private List<User> downvoters;
+    private List<User> downvoters = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
@@ -97,4 +98,5 @@ public class Message {
     public void addDownvoter(User user){
         downvoters.add(user);
     }
+    ///add remove method
 }

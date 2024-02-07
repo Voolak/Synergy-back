@@ -19,13 +19,16 @@ public class PrivateMessageService {
         privateMessageRepository.save(privateMessage);
     }
 
+    // a supprimer si aucun interet
     public List<PrivateMessage> findAll(){
         return privateMessageRepository.findAll();
     }
 
+    // a supprimer si aucun interet
     public Optional<PrivateMessage> findById(Integer id){
         return privateMessageRepository.findById(id);
     }
+
 
     public void delete(Integer id){
         privateMessageRepository.deleteById(id);
@@ -55,17 +58,17 @@ public class PrivateMessageService {
 
 
     public List<PrivateMessage> findAllPrivateMessageFromUserId(Integer idUser){
-        return privateMessageRepository.findBySender_IdOrRecipient_Id(idUser);
+        return privateMessageRepository.findBySender_IdOrRecipient_Id(idUser,idUser);
     }
 
-    public Set<User> findAllUniqueUsersFromPrivateMessageList(Integer idUser){
+    public List<User> findAllUniqueUsersFromPrivateMessageList(Integer idUser){
         List<PrivateMessage> list=findAllPrivateMessageFromUserId(idUser);
         Set<User> userSet= new HashSet<>();
         for (PrivateMessage p: list){
             userSet.add(p.getRecipient());
             userSet.add(p.getSender());
         }
-        return userSet;
+        return userSet.stream().toList();
     }
 
     public List<PrivateMessage> findAllPrivateMessageFromTwoUserId(Integer id1,Integer id2){
