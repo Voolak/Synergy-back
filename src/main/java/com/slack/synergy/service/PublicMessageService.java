@@ -1,5 +1,6 @@
 package com.slack.synergy.service;
 
+import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.model.dao.PublicMessageRepository;
@@ -7,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PublicMessageService {
@@ -53,5 +53,10 @@ public class PublicMessageService {
             publicMessage.addDownvoter(user);
         }
     }
+
+    public List<PublicMessage> findAllPublicMessageFromChannelId(Integer idChannel){
+        return publicMessageRepository.findAllByChannel_id(idChannel);
+    }
+
 
 }

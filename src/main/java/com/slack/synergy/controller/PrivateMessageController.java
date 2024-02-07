@@ -2,13 +2,11 @@ package com.slack.synergy.controller;
 
 import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.User;
-import com.slack.synergy.model.dao.PrivateMessageRepository;
 import com.slack.synergy.service.PrivateMessageService;
 import com.slack.synergy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
