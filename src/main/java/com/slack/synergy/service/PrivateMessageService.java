@@ -38,6 +38,24 @@ public class PrivateMessageService {
         privateMessageRepository.save(fromBdd);
     }
 
-    public void updateUpvote(){}
+    public void  toggleUpvote(User user,PrivateMessage privateMessage){
+        if(privateMessage.getUpvoters().contains(user)){
+            privateMessage.getUpvoters().remove(user);
+        }else{
+            privateMessage.addUpvoter(user);
+        }
+    }
 
+    public void toggleDownvote(User user, PrivateMessage privateMessage){
+        if(privateMessage.getDownvoters().contains(user)){
+            privateMessage.getDownvoters().remove(user);
+        }else{
+            privateMessage.addDownvoter(user);
+        }
+    }
+
+
+    public List<PrivateMessage> findAllPrivateMessageFromUserId(Integer idUser){
+        return privateMessageRepository.findBySender_IdOrRecipient_Id(idUser);
+    }
 }

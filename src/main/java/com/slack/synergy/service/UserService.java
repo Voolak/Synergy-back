@@ -1,5 +1,6 @@
 package com.slack.synergy.service;
 
+import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.model.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
