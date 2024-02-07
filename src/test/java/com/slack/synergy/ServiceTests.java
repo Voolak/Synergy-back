@@ -6,10 +6,11 @@ import com.slack.synergy.model.User;
 import com.slack.synergy.service.ChannelService;
 import com.slack.synergy.service.PrivateMessageService;
 import com.slack.synergy.service.UserService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -105,4 +106,33 @@ public class ServiceTests {
             list.forEach(System.out::println);
         }
     }
+
+    @Test
+    @Transactional
+    void testOrderOfPrivateMessages() {
+        Optional<User> optional1 = userService.findById(1);
+        Optional<User> optional2 = userService.findById(4);
+
+        if(optional1.isPresent() && optional2.isPresent()) {
+            User u2 = optional1.get();
+            User u3 = optional2.get();
+
+//            PrivateMessage pm12 = new PrivateMessage("Test 1 !", u2, u3);
+//            privateMessageService.save(pm12);
+//            PrivateMessage pm21 = new PrivateMessage("Test 1 response", u3, u2);
+//            privateMessageService.save(pm21);
+
+//            PrivateMessage pm13 = new PrivateMessage("Test 2", u2, u3);
+//            privateMessageService.save(pm13);
+
+//            PrivateMessage pm31 = new PrivateMessage("Test 2 response", u3, u2);
+//            privateMessageService.save(pm31);
+
+            List<PrivateMessage> list =
+                    privateMessageService.findAllPrivateMessageFromTwoUserId(u2.getId(), u3.getId());
+
+            list.forEach(System.out::println);
+        }
+    }
+
 }

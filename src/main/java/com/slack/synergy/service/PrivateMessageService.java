@@ -74,7 +74,7 @@ public class PrivateMessageService {
     public List<PrivateMessage> findAllPrivateMessageFromTwoUserId(Integer id1,Integer id2){
         List<PrivateMessage> listMessages = privateMessageRepository.findBySender_IdAndRecipient_Id(id1,id2);
         listMessages.addAll(privateMessageRepository.findByRecipient_IdAndSender_Id(id1,id2));
-        return listMessages.stream().sorted(Comparator.comparing(PrivateMessage::getCreationDate).reversed()).toList();
+        return listMessages.stream().sorted(Comparator.comparing(PrivateMessage::getCreationDate)).toList();
     }
 
 }
