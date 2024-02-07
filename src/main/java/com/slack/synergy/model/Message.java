@@ -16,17 +16,17 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
-    @ManyToMany //(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "upvoters_messages",
-            joinColumns = @JoinColumn(name = "message_id"),
-            inverseJoinColumns = @JoinColumn(name = "upvoter_id"))
+            joinColumns = @JoinColumn(name = "upvoter_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id"))
     private List<User> upvoters = new ArrayList<>();
-    @ManyToMany  //(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "downvoters_messages",
-            joinColumns = @JoinColumn(name = "message_id"),
-            inverseJoinColumns = @JoinColumn(name = "downvoter_id"))
+            joinColumns = @JoinColumn(name = "downvoter_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id"))
     private List<User> downvoters = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "sender_id")

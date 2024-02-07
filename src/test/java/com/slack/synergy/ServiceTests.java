@@ -9,6 +9,7 @@ import com.slack.synergy.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class ServiceTests {
 
     @Test
     void testGetAllPrivateMessagesOfUser() {
-        Optional<User> optional = userService.findById(4);
+        Optional<User> optional = userService.findById(2);
         if(optional.isPresent()) {
             User u1 = optional.get();
 
@@ -76,8 +77,9 @@ public class ServiceTests {
     }
 
     @Test
+    @Transactional
     void testFindAllUniqueUsersFromPrivateMessageList() {
-        Optional<User> optional = userService.findById(1);
+        Optional<User> optional = userService.findById(2);
         if(optional.isPresent()) {
             User u1 = optional.get();
 
@@ -85,13 +87,13 @@ public class ServiceTests {
                     privateMessageService.findAllUniqueUsersFromPrivateMessageList(u1.getId());
 
             usersContacted.forEach(System.out::println);
-
         }
     }
 
     @Test
+    @Transactional
     void testFindAllPrivateMessageFromTwoUserId() {
-        Optional<User> optional1 = userService.findById(1);
+        Optional<User> optional1 = userService.findById(2);
         Optional<User> optional2 = userService.findById(3);
 
         if(optional1.isPresent() && optional2.isPresent()) {
