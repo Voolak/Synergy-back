@@ -63,7 +63,7 @@ public class ServiceTests {
 
     @Test
     void testGetAllPrivateMessagesOfUser() {
-        Optional<User> optional = userService.findById(1);
+        Optional<User> optional = userService.findById(4);
         if(optional.isPresent()) {
             User u1 = optional.get();
 

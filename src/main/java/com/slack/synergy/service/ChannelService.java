@@ -17,6 +17,9 @@ public class ChannelService {
     ChannelRepository channelRepository;
 
     public void save(Channel channel){
+        List<Channel> channels = channelRepository.findAll();
+        if(!channels.isEmpty())
+            channel.setDefault(false);
         channelRepository.save(channel);
     }
 
