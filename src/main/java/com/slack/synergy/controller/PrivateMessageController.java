@@ -66,7 +66,8 @@ public class PrivateMessageController {
         User user = userService.findById(idUser).get();
         if(!privateMessage.getSender().getId().equals(user.getId()) && !privateMessage.getRecipient().getId().equals(user.getId()))
             return ResponseEntity.badRequest().body("Vous n'avez pas la permission de réagir à ce message.");
-        privateMessageService.toggleUpvote(user,privateMessage);
+        if(!privateMessageService.toggleUpvote(user,privateMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Action effectué.");
     }
 
@@ -81,7 +82,8 @@ public class PrivateMessageController {
         User user = userService.findById(idUser).get();
         if(!privateMessage.getSender().getId().equals(user.getId()) && !privateMessage.getRecipient().getId().equals(user.getId()))
             return ResponseEntity.badRequest().body("Vous n'avez pas la permission de réagir à ce message.");
-        privateMessageService.toggleDownvote(user,privateMessage);
+        if(!privateMessageService.toggleDownvote(user,privateMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Action effectuée.");
     }
 
@@ -97,7 +99,8 @@ public class PrivateMessageController {
         if (fromBody.getContent().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
-        privateMessageService.updateContent(fromBody.getContent(), optional.get());
+        if(!privateMessageService.updateContent(fromBody.getContent(), optional.get()))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Contenu modifié");
     }
 
@@ -111,7 +114,8 @@ public class PrivateMessageController {
         User user = userService.findById(idUser).get();
         if(!privateMessage.getSender().getId().equals(user.getId()))
             return ResponseEntity.badRequest().body("Vous n'avez pas la permission de supprimer ce message.");
-        privateMessageService.delete(idMessage);
+        if(!privateMessageService.delete(privateMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Message supprimé.");
     }
 

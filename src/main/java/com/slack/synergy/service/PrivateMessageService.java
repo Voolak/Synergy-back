@@ -25,36 +25,51 @@ public class PrivateMessageService {
 
     }
 
-    // a supprimer si aucun interet
     public Optional<PrivateMessage> findById(Integer id){
         return privateMessageRepository.findById(id);
     }
 
 
-    public void delete(Integer id){
-        privateMessageRepository.deleteById(id);
-    }
-
-    public void updateContent(String content, PrivateMessage fromBdd){
-        fromBdd.setUpdateDate(LocalDateTime.now());
-        fromBdd.setContent(content);
-        privateMessageRepository.save(fromBdd);
-    }
-
-    public void  toggleUpvote(User user,PrivateMessage privateMessage){
-        if(privateMessage.getUpvoters().contains(user)){
-            privateMessage.getUpvoters().remove(user);
-        }else{
-            privateMessage.addUpvoter(user);
+    public boolean delete(PrivateMessage privateMessage){
+        if(privateMessage.getSender().isActive()) {
+            privateMessageRepository.delete(privateMessage);
+            return true;
         }
+        return false;
     }
 
-    public void toggleDownvote(User user, PrivateMessage privateMessage){
-        if(privateMessage.getDownvoters().contains(user)){
-            privateMessage.getDownvoters().remove(user);
-        }else{
-            privateMessage.addDownvoter(user);
+    public boolean updateContent(String content, PrivateMessage fromBdd){
+        if(fromBdd.getSender().isActive()){
+            fromBdd.setUpdateDate(LocalDateTime.now());
+            fromBdd.setContent(content);
+            privateMessageRepository.save(fromBdd);
+            return true;
         }
+        return false;
+    }
+
+    public boolean toggleUpvote(User user,PrivateMessage privateMessage){
+        if(user.isActive()){
+            if(privateMessage.getUpvoters().contains(user)){
+                privateMessage.getUpvoters().remove(user);
+            }else{
+                privateMessage.addUpvoter(user);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean toggleDownvote(User user, PrivateMessage privateMessage){
+        if(user.isActive()){
+            if(privateMessage.getDownvoters().contains(user)){
+                privateMessage.getDownvoters().remove(user);
+            }else{
+                privateMessage.addDownvoter(user);
+            }
+            return true;
+        }
+        return false;
     }
 
 
