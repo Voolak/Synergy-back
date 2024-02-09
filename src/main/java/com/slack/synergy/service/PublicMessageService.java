@@ -16,42 +16,58 @@ public class PublicMessageService {
     @Autowired
     PublicMessageRepository publicMessageRepository;
 
-    public void save(PublicMessage publicMessage){
-        publicMessageRepository.save(publicMessage);
-    }
-
-    public List<PublicMessage> findAll(){
-        return publicMessageRepository.findAll();
+    public boolean save(PublicMessage publicMessage){
+        if(publicMessage.getSender().isActive()){
+            publicMessageRepository.save(publicMessage);
+            return true;
+        }
+        return false;
     }
 
     public Optional<PublicMessage> findById(Integer id){
         return publicMessageRepository.findById(id);
     }
 
-    public void delete(Integer id){
-        publicMessageRepository.deleteById(id);
-    }
-
-    public void updateContent(String content, PublicMessage fromBdd){
-        fromBdd.setUpdateDate(LocalDateTime.now());
-        fromBdd.setContent(content);
-        publicMessageRepository.save(fromBdd);
-    }
-
-    public void toggleUpvote(User user,PublicMessage publicMessage){
-        if(publicMessage.getUpvoters().contains(user)){
-            publicMessage.getUpvoters().remove(user);
-        }else{
-            publicMessage.addUpvoter(user);
+    public boolean delete(PublicMessage publicMessage){
+        if(publicMessage.getSender().isActive()){
+            publicMessageRepository.delete(publicMessage);
+            return true;
         }
+        return false;
     }
 
-    public void toggleDownvote(User user, PublicMessage publicMessage){
-        if(publicMessage.getDownvoters().contains(user)){
-            publicMessage.getDownvoters().remove(user);
-        }else{
-            publicMessage.addDownvoter(user);
+    public boolean updateContent(String content, PublicMessage fromBdd){
+        if(fromBdd.getSender().isActive()){
+            fromBdd.setUpdateDate(LocalDateTime.now());
+            fromBdd.setContent(content);
+            publicMessageRepository.save(fromBdd);
+            return true;
         }
+        return false;
+    }
+
+    public boolean toggleUpvote(User user,PublicMessage publicMessage){
+        if(user.isActive()){
+            if(publicMessage.getUpvoters().contains(user)){
+                publicMessage.getUpvoters().remove(user);
+            }else{
+                publicMessage.addUpvoter(user);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean toggleDownvote(User user, PublicMessage publicMessage){
+        if(user.isActive()){
+            if(publicMessage.getDownvoters().contains(user)){
+                publicMessage.getDownvoters().remove(user);
+            }else{
+                publicMessage.addDownvoter(user);
+            }
+            return true;
+        }
+        return false;
     }
 
     public List<PublicMessage> findAllPublicMessageFromChannelId(Integer idChannel){

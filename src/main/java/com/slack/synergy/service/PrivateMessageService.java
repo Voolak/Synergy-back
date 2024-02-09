@@ -15,13 +15,14 @@ public class PrivateMessageService {
     @Autowired
     PrivateMessageRepository privateMessageRepository;
 
-    public void save(PrivateMessage privateMessage){
+    public PrivateMessageStatus save(PrivateMessage privateMessage){
+        if(!privateMessage.getSender().isActive())
+            return PrivateMessageStatus.ERROR_SENDER_INACTIVE;
+        if(!privateMessage.getRecipient().isActive())
+            return PrivateMessageStatus.ERROR_RECIPIENT_INACTIVE;
         privateMessageRepository.save(privateMessage);
-    }
+        return PrivateMessageStatus.OK;
 
-    // a supprimer si aucun interet
-    public List<PrivateMessage> findAll(){
-        return privateMessageRepository.findAll();
     }
 
     // a supprimer si aucun interet

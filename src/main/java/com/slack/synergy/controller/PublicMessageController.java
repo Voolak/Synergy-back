@@ -33,7 +33,8 @@ public class PublicMessageController {
         Optional<User> userOptional = userService.findById(message.getSender().getId());
         if(message.getSender() == null || userOptional.isEmpty())
             return ResponseEntity.badRequest().body("L'utilisateur associé n'est pas valide");
-        publicMessageService.save(message);
+        if(!publicMessageService.save(message))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.status(HttpStatus.CREATED).body("Creation du message.");
     }
 
@@ -48,7 +49,8 @@ public class PublicMessageController {
         User user = userService.findById(idUser).get();
         if(!publicMessage.getSender().getId().equals(user.getId()))
             return ResponseEntity.badRequest().body("Vous n'avez pas la permission de supprimer ce message.");
-        publicMessageService.delete(idMessage);
+        if(!publicMessageService.delete(publicMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Message supprimé.");
     }
 
@@ -61,7 +63,8 @@ public class PublicMessageController {
             return ResponseEntity.badRequest().body("L'id du message n'est pas reconnu");
         if (messageFromBody.getContent().isBlank())
             return ResponseEntity.badRequest().body("Le contenu du message ne peut pas être vide");
-        publicMessageService.updateContent(messageFromBody.getContent(), optional.get());
+        if(!publicMessageService.updateContent(messageFromBody.getContent(), optional.get()))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Contenu modifié");
     }
 
@@ -73,7 +76,8 @@ public class PublicMessageController {
             return ResponseEntity.badRequest().body("L'id du message n'est pas reconnu.");
         PublicMessage publicMessage = publicMessageService.findById(idMessage).get();
         User user = userService.findById(idUser).get();
-        publicMessageService.toggleUpvote(user,publicMessage);
+        if(!publicMessageService.toggleUpvote(user,publicMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Action effectué.");
     }
 
@@ -85,7 +89,8 @@ public class PublicMessageController {
             return ResponseEntity.badRequest().body("L'id du message n'est pas reconnu.");
         PublicMessage publicMessage = publicMessageService.findById(idMessage).get();
         User user = userService.findById(idUser).get();
-        publicMessageService.toggleDownvote(user,publicMessage);
+        if(!publicMessageService.toggleDownvote(user,publicMessage))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
         return ResponseEntity.ok("Action effectué.");
     }
 

@@ -4,6 +4,7 @@ import com.slack.synergy.model.Channel;
 import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.service.PrivateMessageService;
+import com.slack.synergy.service.PrivateMessageStatus;
 import com.slack.synergy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,11 @@ public class PrivateMessageController {
             return ResponseEntity.badRequest().body("L'expéditeur associé n'est pas valide");
         if(message.getRecipient() == null || recipientOptional.isEmpty())
             return ResponseEntity.badRequest().body("Le destinataire associé n'est pas valide");
-        privateMessageService.save(message);
+        PrivateMessageStatus status = privateMessageService.save(message);
+        if(status.equals(PrivateMessageStatus.ERROR_SENDER_INACTIVE))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte est désactivé.");
+        if(status.equals(PrivateMessageStatus.ERROR_RECIPIENT_INACTIVE))
+            return ResponseEntity.badRequest().body("Action impossible. Le compte destinataire est désactivé.");
         return ResponseEntity.status(HttpStatus.CREATED).body("Creation du message.");
     }
 
