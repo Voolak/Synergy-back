@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -20,7 +20,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody User user){
-        userService.save(user);
+        if(!userService.save(user))
+            return ResponseEntity.badRequest().body("Un utilisateur avec cette addresse mail existe déjà !");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

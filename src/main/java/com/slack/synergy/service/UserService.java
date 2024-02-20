@@ -15,8 +15,14 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void save(User user){
-        userRepository.save(user);
+    public boolean save(User user){
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+
+        if(optionalUser.isEmpty()) {
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     public List<User> findAll(){
@@ -41,5 +47,9 @@ public class UserService {
             user.get().setActive(!user.get().isActive());
             userRepository.save(user.get());
         }
+    }
+
+    public Optional<User> findByUsernameAndEmail(String username, String email){
+        return userRepository.findByUsernameAndEmail(username, email);
     }
 }

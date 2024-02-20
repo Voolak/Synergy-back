@@ -135,4 +135,12 @@ public class ServiceTests {
         }
     }
 
+    @Test
+    void testFindByUsernameAndEmail() {
+        User u1 = new User("marysmith", "Mary", "Smith", "ms@exemple.com");
+        userService.save(u1);
+        Optional<User> optional = userService.findByUsernameAndEmail("marysmith","ms@exemple.com");
+        optional.ifPresent(System.out::println);
+    }
+
 }

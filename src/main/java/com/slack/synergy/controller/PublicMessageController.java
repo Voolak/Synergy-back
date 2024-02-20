@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController("api/publicmessages")
 public class PublicMessageController {
     @Autowired
