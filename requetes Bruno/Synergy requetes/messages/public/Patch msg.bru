@@ -1,0 +1,17 @@
+meta {
+  name: Patch msg
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://localhost:8080/api/publicmessages/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+     "content": "Nouveau contenu du message public"
+  }
+}

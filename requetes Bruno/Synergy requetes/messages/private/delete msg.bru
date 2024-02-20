@@ -1,0 +1,19 @@
+meta {
+  name: delete msg
+  type: http
+  seq: 6
+}
+
+delete {
+  url: http://localhost:8080/api/privatemessages/1/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "id": 2,
+      "content": "Nouveau contenu du message" 
+  }
+  
+}

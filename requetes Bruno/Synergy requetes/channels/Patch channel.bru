@@ -1,0 +1,18 @@
+meta {
+  name: Patch channel
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/channels/4
+  body: json
+  auth: none
+}
+
+body:json {
+     {
+      "id": 4,
+      "name": "Music channel"
+    }
+}

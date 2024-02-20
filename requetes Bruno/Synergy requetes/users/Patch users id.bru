@@ -1,0 +1,17 @@
+meta {
+  name: Patch users id
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/users/disable/9
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "active": false }
+    
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Patch downvote
+  type: http
+  seq: 7
+}
+
+patch {
+  url: http://localhost:8080/api/privatemessages/upvote/1/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+     "content": "Nouveau contenu du message public"
+  }
+}

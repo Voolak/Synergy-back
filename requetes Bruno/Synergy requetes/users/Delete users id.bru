@@ -1,0 +1,22 @@
+meta {
+  name: Delete users id
+  type: http
+  seq: 3
+}
+
+delete {
+  url: http://localhost:8080/api/users/8
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    
+      "username": "martindupont",
+      "firstName": "Martin",
+      "lastName": "Dupont",
+      "email": "martin@mail.fr",
+      "active": true }
+    
+}

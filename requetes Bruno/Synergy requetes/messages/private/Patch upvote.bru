@@ -1,0 +1,17 @@
+meta {
+  name: Patch upvote
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/publicmessages/upvote/1/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+     "content": "Nouveau contenu du message public"
+  }
+}

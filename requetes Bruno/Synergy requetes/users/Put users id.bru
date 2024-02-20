@@ -1,0 +1,17 @@
+meta {
+  name: Put users id
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/api/users/9
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username":"martind" 
+  }
+}
