@@ -16,9 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
-@RestController("api/publicmessages")
-
-
+@RequestMapping(("api/publicmessages"))
+@RestController
 public class PublicMessageController {
     @Autowired
     private PublicMessageService publicMessageService;

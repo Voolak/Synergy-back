@@ -2,9 +2,11 @@ package com.slack.synergy;
 
 import com.slack.synergy.model.Channel;
 import com.slack.synergy.model.PrivateMessage;
+import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.service.ChannelService;
 import com.slack.synergy.service.PrivateMessageService;
+import com.slack.synergy.service.PublicMessageService;
 import com.slack.synergy.service.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ import java.util.Optional;
 
 @SpringBootTest
 public class ServiceTests {
+    @Autowired
+    private PublicMessageService publicMessageService;
     @Autowired
     private PrivateMessageService privateMessageService;
     @Autowired
@@ -142,5 +146,21 @@ public class ServiceTests {
         Optional<User> optional = userService.findByUsernameAndEmail("marysmith","ms@exemple.com");
         optional.ifPresent(System.out::println);
     }
+
+    @Test
+    void testPublicMessages() {
+        Optional<User> optional1 = userService.findById(1);
+        Optional<Channel> optional2 = channelService.findById(1);
+
+        if(optional1.isPresent() && optional2.isPresent()) {
+            User u1 = optional1.get();
+            Channel c1 = optional2.get();
+
+            PublicMessage pbm1 = new PublicMessage("Test content Welcome Message !", u1, c1);
+            publicMessageService.save(pbm1);
+        }
+
+    }
+
 
 }
