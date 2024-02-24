@@ -6,6 +6,7 @@ import com.slack.synergy.model.User;
 import com.slack.synergy.service.PrivateMessageService;
 import com.slack.synergy.service.PrivateMessageStatus;
 import com.slack.synergy.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class PrivateMessageController {
     UserService userService;
 
     @GetMapping("/{idUser}")
+    @Operation(summary = "Récupère toutes les conversations d'un utilisateur")
     public ResponseEntity<?> getAllConversation(@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'id de l'utilisateur n'est pas reconnu."));
@@ -31,6 +33,7 @@ public class PrivateMessageController {
     }
 
     @GetMapping("/{idUser}/{idSecondUser}")
+    @Operation(summary = "Récupère toutes les conversations entre deux utilisateurs")
     public ResponseEntity<?> getAllMessageFromConversation(@PathVariable("idUser") Integer idUser,@PathVariable("idSecondUser") Integer idSecondUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'id de l'utilisateur n'est pas reconnu."));
@@ -40,6 +43,7 @@ public class PrivateMessageController {
     }
 
     @PostMapping
+    @Operation(summary = "Sauvegarde un message privé")
     public ResponseEntity<?> savePrivateMessage(@RequestBody PrivateMessage message){
         if(message.getContent() == null || message.getContent().isBlank())
             return ResponseEntity.badRequest().body(Map.of("message", "Le contenu du message ne peut pas être vide"));
@@ -58,6 +62,7 @@ public class PrivateMessageController {
     }
 
     @PatchMapping("/upvote/{idMessage}/{idUser}")
+    @Operation(summary = "Upvote d'un message")
     public ResponseEntity<?> upvoteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'id de l'utilisateur n'est pas reconnu."));
@@ -74,6 +79,7 @@ public class PrivateMessageController {
 
 
     @PatchMapping("/downvote/{idMessage}/{idUser}")
+    @Operation(summary = "Downvote un message privé d'un utilisateur")
     public ResponseEntity<?> downvoteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'id de l'utilisateur n'est pas reconnu."));
@@ -89,6 +95,7 @@ public class PrivateMessageController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Met à jour le contenu d'un message privé")
     public ResponseEntity<?> updateContentOfMessage(@RequestBody PrivateMessage fromBody, @PathVariable("id") Integer id) {
         if (!id.equals(fromBody.getId())) {
             return ResponseEntity.badRequest().build();
@@ -106,6 +113,7 @@ public class PrivateMessageController {
     }
 
     @DeleteMapping("/{idMessage}/{idUser}")
+    @Operation(summary = "Suppression d'un message privé d'un utilisateur")
     public ResponseEntity<?> deleteMessage(@PathVariable("idMessage") Integer idMessage,@PathVariable("idUser") Integer idUser){
         if(userService.findById(idUser).isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'id de l'utilisateur n'est pas reconnu."));

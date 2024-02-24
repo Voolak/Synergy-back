@@ -2,6 +2,7 @@ package com.slack.synergy.controller;
 
 import com.slack.synergy.model.User;
 import com.slack.synergy.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class UserAuthentificationController {
     UserService userService;
 
     @PostMapping
+    @Operation(summary = "Authentifie un utilisateur")
     public ResponseEntity<?> authentificateUser(@RequestBody User user){
         Optional<User> optionalUser = userService.findByUsernameAndEmail(user.getUsername(), user.getEmail());
         if(optionalUser.isEmpty())

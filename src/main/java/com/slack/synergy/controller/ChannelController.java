@@ -4,6 +4,7 @@ import com.slack.synergy.model.Channel;
 import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.service.ChannelService;
 import com.slack.synergy.service.PublicMessageService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class ChannelController {
     private PublicMessageService publicMessageService;
 
     @PostMapping
+    @Operation(summary = "Ajoute un Canal")
     public ResponseEntity<?> addChannel(@RequestBody Channel channel){
         if (channel.getName()== null ||channel.getName().isBlank())
             return ResponseEntity.badRequest().body(Map.of("message", "Le nom du canal est obligatoire"));
@@ -32,12 +34,14 @@ public class ChannelController {
         return ResponseEntity.status(HttpStatus.CREATED).body((Map.of("message","Canal crée avec succés")));
     }
     @GetMapping
+    @Operation(summary = "Renvoie la liste des canaux")
     public ResponseEntity<List<Channel>> getAllChannels(){
         List<Channel> channels = channelService.findAll();
         return ResponseEntity.ok(channels);
     }
 
     @GetMapping("/{idChannel}")
+    @Operation(summary = "Renvoie un Canal")
     public ResponseEntity<?> getChannelMessagesById(@PathVariable("idChannel") Integer idChannel) {
         Optional<Channel> channelOptional = channelService.findById(idChannel);
         if(channelOptional.isEmpty())
@@ -47,6 +51,7 @@ public class ChannelController {
     }
 
     @DeleteMapping("/{idChannel}")
+    @Operation(summary = "Supprime un Canal")
     public ResponseEntity<?> deleteChannel(@PathVariable("idChannel") Integer idChannel){
         Optional<Channel> channelOptional = channelService.findById(idChannel);
         if(channelOptional.isEmpty())
@@ -57,6 +62,7 @@ public class ChannelController {
     }
 
     @PatchMapping("/{idChannel}")
+    @Operation(summary = "Met à jour (Patch) un Canal")
     public ResponseEntity<?> updateNameChannel(@PathVariable("idChannel") Integer idChannel,@RequestBody Channel channel){
         Optional<Channel> channelOptional = channelService.findById(idChannel);
         if(channelOptional.isEmpty())
@@ -67,6 +73,5 @@ public class ChannelController {
             return ResponseEntity.badRequest().body(Map.of("message", "Le canal par défaut ne pas être mis à jour"));
         return ResponseEntity.ok(Map.of("message", "Le canal a été mis à jour"));
     }
-
 
 }
