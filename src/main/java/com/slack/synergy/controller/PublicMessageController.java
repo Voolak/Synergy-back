@@ -38,9 +38,10 @@ public class PublicMessageController {
         Optional<User> userOptional = userService.findById(message.getSender().getId());
         if(message.getSender() == null || userOptional.isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "L'utilisateur associé n'est pas valide"));
-        if(!publicMessageService.save(message))
+        Optional<PublicMessage> optionalPublicMessage = publicMessageService.save(message);
+        if(optionalPublicMessage.isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "Action impossible. Le compte est désactivé."));
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Creation du message."));
+        return ResponseEntity.status(HttpStatus.CREATED).body(optionalPublicMessage.get());
     }
 
 

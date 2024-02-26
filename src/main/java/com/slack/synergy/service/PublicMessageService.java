@@ -16,12 +16,12 @@ public class PublicMessageService {
     @Autowired
     PublicMessageRepository publicMessageRepository;
 
-    public boolean save(PublicMessage publicMessage){
+    public Optional<PublicMessage> save(PublicMessage publicMessage){
         if(publicMessage.getSender().isActive()){
-            publicMessageRepository.save(publicMessage);
-            return true;
+            return Optional.of(publicMessageRepository.save(publicMessage));
+
         }
-        return false;
+        return Optional.empty();
     }
 
     public Optional<PublicMessage> findById(Integer id){
