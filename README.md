@@ -23,3 +23,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ### How To Get The API Documentation ?
 1. Start Synergy-back
 2. Access the url : http://localhost:8080/swagger-ui.html
+
+### How to get the queries for the DB ?
+
+In the file DB at the source of the project
