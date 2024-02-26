@@ -1,0 +1,43 @@
+DROP TABLE IF EXISTS downvoters_messages;
+DROP TABLE IF EXISTS upvoters_messages;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS channels;
+
+CREATE TABLE IF NOT EXISTS users (
+	id SERIAL PRIMARY KEY,
+	username VARCHAR(50) NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	creation_date TIMESTAMP NOT NULL,
+	is_active BOOLEAN NOT NULL 
+);
+
+CREATE TABLE IF NOT EXISTS channels(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	is_default BOOLEAN NOT NULL,
+	creation_date TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS messages(
+	id SERIAL PRIMARY KEY,
+	content VARCHAR(65535) NOT NULL,
+	channel_id INTEGER REFERENCES channels,
+	sender_id INTEGER REFERENCES users ON DELETE SET NULL,
+	recipient_id INTEGER REFERENCES users ON DELETE SET NULL,
+	message_type VARCHAR(50) NOT NULL,
+	creation_date TIMESTAMP NOT NULL,
+	update_date TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS downvoters_messages(
+	downvoter_id INTEGER REFERENCES users,
+	message_id INTEGER REFERENCES messages
+);
+
+CREATE TABLE IF NOT EXISTS upvoters_messages(
+	upvoter_id INTEGER REFERENCES users,
+	message_id INTEGER REFERENCES messages
+);
