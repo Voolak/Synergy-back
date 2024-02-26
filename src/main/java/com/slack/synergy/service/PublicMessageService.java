@@ -1,6 +1,5 @@
 package com.slack.synergy.service;
 
-import com.slack.synergy.model.PrivateMessage;
 import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.model.dao.PublicMessageRepository;
@@ -71,7 +70,7 @@ public class PublicMessageService {
     }
 
     public List<PublicMessage> findAllPublicMessageFromChannelId(Integer idChannel){
-        return publicMessageRepository.findAllByChannel_id(idChannel);
+        return publicMessageRepository.findAllByChannel_id(idChannel).stream().sorted(Comparator.comparing(PublicMessage::getCreationDate)).toList();
     }
 
 

@@ -1,6 +1,7 @@
 package com.slack.synergy.service;
 
 import com.slack.synergy.model.Channel;
+import com.slack.synergy.model.PublicMessage;
 import com.slack.synergy.model.User;
 import com.slack.synergy.model.dao.ChannelRepository;
 import com.slack.synergy.model.dao.UserRepository;
@@ -15,6 +16,8 @@ public class ChannelService {
 
     @Autowired
     ChannelRepository channelRepository;
+    @Autowired
+    PublicMessageService publicMesssageService;
 
     public void save(Channel channel){
         List<Channel> channels = channelRepository.findAll();
@@ -35,6 +38,13 @@ public class ChannelService {
     public boolean delete(Channel channel){
         if(channel.isDefault())
             return false;
+
+        List<PublicMessage> channelMessages = publicMesssageService.findAllPublicMessageFromChannelId(channel.getId());
+        if(!channelMessages.isEmpty()){
+            for (PublicMessage message : channelMessages) {
+                publicMesssageService.delete(message);
+            }
+        }
         channelRepository.deleteById(channel.getId());
         return true;
     }
