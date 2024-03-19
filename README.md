@@ -1,5 +1,5 @@
 # Projet Synergy
-<img src="synergy_logo_blc_sans_texte.png" width="40%">
+<img src="synergy_logo_blc.png" width="20%">
 
 ---
 ### HOW TO LAUNCH THE PROJECT :
