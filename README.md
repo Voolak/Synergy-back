@@ -27,3 +27,6 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ### How to get the queries for the DB ?
 
 In the file DB at the source of the project
+
+### How to see the front of the project ?
+1. Click this link : https://github.com/AyoubEchcharrat/Synergy-front/tree/main
